@@ -42,29 +42,25 @@ def collect(pickle=False):
         ### LOAD *PROJECTS* FROM CLOCKIFY ###
 
         r_pr = requests.get(endpoints.EP["ep_pr"], headers=API_KEY)
-        df_pr = pd.DataFrame(r_pr.json())
-        projects = df_pr
-        projects.head(2)
+        df_projects = pd.DataFrame(r_pr.json())
 
         ### LOAD *TIMES* ENTRIES FROM CLOCKIFY ###
 
         r_te = requests.get(endpoints.EP["ep_te"], headers=API_KEY)
-        df_time = pd.DataFrame(r_te.json())
-        times = df_time
-        times.head(2)
+        df_times = pd.DataFrame(r_te.json())
 
-        # # Expand Time Interval in times
+        # # Expand Time Interval in times column
 
-        times = utils.expand_time(times)
+        df_times = utils.expand_time(times)
 
         # print the earliest date to check how far back data goes
         print(
             "The oldest entry starts on: \n" + str(utils.check_min_date(times)) + "\n"
         )
 
-        df = utils.merge_times_proj(times, projects)
+        df = utils.merge_times_proj(df_times, df_projects)
 
-        # hard CACHE
+        # Hard Cache of retrieved data
         dump_loc = Path("./data/pkl/cache.pkl")
         df.to_pickle(dump_loc)
 
