@@ -1,7 +1,9 @@
 from data import config
+from pipeline import headers
 import pandas as pd
 import requests
 import numpy as np
+import datetime as dt
 
 
 def check_auth(dest=config.ENDPOINT, headers=config.API_KEY):
@@ -42,7 +44,7 @@ def expand_time(times):
         np.round(times_expanded.minutes / 60 * 4) / 4
     )  ## rounded hours
 
-    times_expanded["minutes_waste"] = np.round(
+    times_expanded["minutes_rounded_up"] = np.round(
         times_expanded.minutes / 60 * 4
     ) / 4 * 60 - (
         times_expanded.minutes
@@ -57,7 +59,9 @@ def check_min_date(df):
 
 def status_trimmed(df):
     print("hours rounded total = " + str(times_trimcheck["hours_rounded"].sum()))
-    print("sum minutes trimmed = " + str(times_trimcheck["minutes_waste"].sum()))
+    print(
+        "sum minutes rounded up = " + str(times_trimcheck["minutes_rounded_up"].sum())
+    )
 
 
 def merge_times_proj(left, right):
@@ -87,18 +91,55 @@ def date_index_order(df):
     df["startIndex"] = df["start"]  # copy start date
     df = df.set_index(
         "startIndex", drop=True, verify_integrity=True
-    )  # use copied row as index then drop it setting index
+    )  # use copied column as index then drop it setting index
     df.index = pd.to_datetime(df.index)
     df.sort_values(by="startIndex", ascending=False)  # order in reverse
     return df
 
 
-def filter_by_month(df, month):
-    """filter a dataframe by month, where month is integer, and index is datetime"""
-    month_df = df[df.index.month.isin([month])]
-    return month_df
+def filter_year_month(df, year=0, month=0):
+    """filter a dataframe by year/month, where value is integer, and index is datetime, default to now()"""
+
+    if year == 0:
+        df = df[df.index.year.isin([(dt.datetime.now().year)])]
+    elif year == "all":
+        df = df  # 'all' parameter skips
+    else:
+        df = df[df.index.year.isin([year])]
+
+    if month == 0:
+        df = df[df.index.month.isin([(dt.datetime.now().month)])]
+    elif month == "all":
+        df = df  # 'all' parameter skips
+    else:
+        df = df[df.index.month.isin([month])]
+
+    return df
 
 
 def sum_name_grouped(df):
     df = df.groupby("name").sum()
+    return df
+
+
+def NaN_filter(df, name=True):
+    """ Filter out NaN values as required, default, ["name"] NaN changed to 'No Project' """
+    df["name"].fillna("No Project", inplace=True)
+    df["clientName"].fillna("No Client", inplace=True)
+    return df
+
+
+def drop_headers(df):
+    to_drop = []
+    dict_to_drop_now = {}
+    for x in df.columns.tolist():
+        # print(x)
+        # print(dict_to_drop_now[x])
+        if headers.drop_filter[x] == "False":
+            to_drop.append(x)
+        else:
+            continue
+    print("Dropping:\n" + str(to_drop))
+    df.drop(to_drop, axis=1, inplace=True)
+    print("Dropped")
     return df
