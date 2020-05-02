@@ -1,6 +1,6 @@
 # Directories
-./data/*
-data
+/data/*
+!/data/config_template.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
