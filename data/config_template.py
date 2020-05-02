@@ -1,3 +1,6 @@
+"""Rename this config file to 'config.py' in the data/config.py location, and fill out"""
+
+
 VERBOSE = True
 
 # Project details
