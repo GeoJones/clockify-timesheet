@@ -14,7 +14,7 @@ from pipeline import endpoints
 from pipeline import collect
 from pipeline import headers
 
-
+### ALLOW FORMATTING IN TERMINAL BELOW ###
 class bcolors:
     HEADER = "\033[95m"
     OKBLUE = "\033[94m"
@@ -53,7 +53,6 @@ print(f"{bcolors.WARNING}PREPARE TO FILTER{bcolors.ENDC}" + " ")
 # filter by Month
 df = utils.filter_year_month(df, month=4, year=0)  # for february example month = 2
 print(f"{bcolors.OKBLUE}FILTER{bcolors.ENDC}" + " ")
-print(df.head(2))
 
 
 """ # irrelevant - example of resampling

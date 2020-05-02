@@ -17,6 +17,8 @@ def check_auth(dest=config.ENDPOINT, headers=config.API_KEY):
         return r.status_code
 
 
+# should use try above>?
+
 """ r = requests.get(ENDPOINT, headers=HEADER)
 r_ws = requests.get(ep_ws, headers=HEADER)
 r_te = requests.get(ep_te, headers=HEADER)
@@ -133,8 +135,6 @@ def drop_headers(df):
     to_drop = []
     dict_to_drop_now = {}
     for x in df.columns.tolist():
-        # print(x)
-        # print(dict_to_drop_now[x])
         if headers.drop_filter[x] == "False":
             to_drop.append(x)
         else:

@@ -1,40 +1,4 @@
-drop_list = {}
-""" for a in [
-    "id_timeEntry",
-    "description",
-    "tagIds",
-    "userId",
-    "billable_timeEntry",
-    "taskId",
-    "projectId",
-    "timeInterval",
-    "workspaceId_timeEntry",
-    "isLocked",
-    "customFieldValues",
-    "start",
-    "end",
-    "duration_timeEntry",
-    "minutes",
-    "hours_rounded",
-    "minutes_rounded_up",
-    "id_proj",
-    "name",
-    "hourlyRate",
-    "clientId",
-    "workspaceId_proj",
-    "billable_proj",
-    "memberships",
-    "color",
-    "estimate",
-    "archived",
-    "duration_proj",
-    "clientName",
-    "note",
-    "template",
-    "public",
-    "_merge",
-]:
-    drop_list.update({a: "True"}) """
+""" Use this list to define which headers are dropped during drop_headers() function"""
 
 drop_filter = {
     "id_timeEntry": "True",
