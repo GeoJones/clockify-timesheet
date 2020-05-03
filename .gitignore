@@ -1,5 +1,8 @@
 # Directories
-/data/*
+data/*
+
+# Config
+config.py
 !/data/config_template.py
 
 # Byte-compiled / optimized / DLL files

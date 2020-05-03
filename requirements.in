@@ -1,0 +1,5 @@
+ipython==7.14.0 
+joblib==0.14.1
+loguru==0.4.1
+pandas==1.0.3
+requests==2.23.0
